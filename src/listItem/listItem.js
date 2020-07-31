@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Grid,
@@ -6,9 +6,11 @@ import {
   ButtonBase,
   Typography,
   Link,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import actions from "../store/actions";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -17,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
 
   GridItem: {
     textAlign: "center",
+    Height: "200",
+    maxHeight: "200",
   },
   image: {},
   itemImg: {
@@ -27,24 +31,34 @@ const useStyles = makeStyles((theme) => ({
   },
   ListItem: {},
   Notification: {
-      textAlign : "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "20%",
+    textAlign: "center",
+  },
+  TextEmptyItems: {
+    textAlign: "center",
   },
 }));
 const ListItem = (props) => {
-  const items = useSelector((state) => state);
+  const {items, load} = useSelector((state) => state);
   const classes = useStyles();
   const Notification = () => {
     return (
-      <Typography className={classes.Notification}>
-        What watch do you want to find?
-      </Typography>
+      <div className={classes.Notification}>
+        {load === false ? (
+          <div>What watch do you want to find?</div>
+        ) : (
+          <CircularProgress />
+        )}
+      </div>
     );
   };
   return (
     <Container className={classes.root}>
       <Grid container item xs={12} spacing={2} direction="row">
         {items === undefined ? (
-          <Notification />
+          <Notification className={classes.Notification} />
         ) : (
           items.map((item, id) => {
             return (
@@ -57,7 +71,7 @@ const ListItem = (props) => {
                   >
                     <div
                       style={{
-                        backgroundImage: `url(${item.img})`,
+                        backgroundImage: `url(${item.image})`,
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "contain",
                         backgroundPosition: "center",
@@ -68,9 +82,9 @@ const ListItem = (props) => {
                     ></div>
                   </ButtonBase>
                   <Typography noWrap>
-                    <Link href={item.url}>{item.title}</Link>
+                    <Link href={item.url}>{item.product}</Link>
                   </Typography>
-                  <Typography>{item.price + item.priceCent}</Typography>
+                  <Typography>{item.price}</Typography>
                 </Paper>
               </Grid>
             );

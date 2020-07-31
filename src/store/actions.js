@@ -4,7 +4,14 @@ const postData = (data) => {
         payload: data,
     }
 }
+const postLoad = (boolean) => {
+    return {
+        type: "POST_LOAD",
+        payload : boolean
+    }
+}
 
 export default {
     postData,
+    postLoad,
 }

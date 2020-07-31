@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { InputBase, Container,Typography } from "@material-ui/core";
+import { InputBase, Container, Typography } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import APIHelper from "../APIhelper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import actions from "../store/actions";
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -48,13 +48,18 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   Header: {
-      textAlign: 'center'
-  }
+    textAlign: "center",
+  },
 }));
 const Header = (props) => {
+  const  load  = useSelector((state) => state);
   const [text, setText] = useState("");
   const classes = useStyles();
   const dispatch = useDispatch();
+  if (load === undefined && load !== false) {
+    dispatch(actions.postLoad(false));
+  }
+
   const send = async (postData) => {
     const items = await APIHelper.send(postData);
     dispatch(actions.postData(items));
@@ -64,6 +69,8 @@ const Header = (props) => {
       if (text.length > 1) {
         send(text);
         setText("");
+        dispatch(actions.postLoad(true));
+        
       }
     }
   };
@@ -73,9 +80,7 @@ const Header = (props) => {
 
   return (
     <Container className={classes.root}>
-        <Typography className = {classes.Header}>
-           Watch
-        </Typography>
+      <Typography className={classes.Header}>Watch</Typography>
       <div className={classes.search}>
         <div className={classes.searchIcon}>
           <SearchIcon />
