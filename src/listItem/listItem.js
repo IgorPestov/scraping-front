@@ -18,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
   },
 
   GridItem: {
+    marginTop: "5%",
     textAlign: "center",
-    Height: "200",
-    maxHeight: "200",
+    maxHeight: "auto",
   },
   image: {},
   itemImg: {
@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "50%",
     maxHeight: "70%",
   },
-  ListItem: {},
+  ListItem: {
+    height: "260px",
+  },
   Notification: {
     marginLeft: "auto",
     marginRight: "auto",
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const ListItem = (props) => {
-  const {items, load} = useSelector((state) => state);
+  const { items, load } = useSelector((state) => state);
   const classes = useStyles();
   const Notification = () => {
     return (
